@@ -2,7 +2,13 @@ const express = require('express')
 const expressHandlebars = require('express-handlebars')
 const app = express()
 const port = process.env.PORT || 3000
-const fortune = require('./lib/fortune')/* ./ : node_modules 디렉터리에서 모듈을 찾지 말라는 의미. 이 부분 생략시 임포트 실패. */
+const fortunes = [
+    "Conquer your fears or they will conquer you.",
+    "Revers need springs.",
+    "Do not fear what you don't know.",
+    "You will have a pleasant surprise.",
+    "Whenever possible, keep it simple.",
+]
 
 
 // 핸들바 뷰 엔진 설정
@@ -15,7 +21,8 @@ app.use(express.static(__dirname+'/public'))
 app.get('/', (req, res) => res.render('home'))
 
 app.get('/about', (req, res) => {
-    res.render('about', {fortune:fortune.getFortune()})
+    const randomFortune = fortunes[Math.floor(Math.random()*fortunes.length)]
+    res.render('about', {fortune:randomFortune})
 })
 
 // custom 404 page
