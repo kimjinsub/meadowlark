@@ -4,7 +4,7 @@ const app = express()
 const port = process.env.PORT || 3000
 const handlers = require('./lib/handlers')
 
-
+app.disable("x-powered-by")//응답헤더의 x-powered-by:Express 정보를 감춤.
 // 핸들바 뷰 엔진 설정
 app.engine('handlebars', expressHandlebars({
     defaultLayout: 'main'
@@ -16,6 +16,12 @@ app.get('/', handlers.home)
 
 app.get('/about', handlers.about)
 
+app.get('/headers', (req, res) => {
+    res.type('text/plain')
+    const headers = Object.entries(req.headers)
+        .map(([key, value]) => `${key}: ${value}`)
+    res.send(headers.join('\n'))
+})
 // custom 404 page
 app.use(handlers.notFound)
 
